@@ -1,7 +1,10 @@
 from interface.usecase.user import UserUsecaseInterface
 
-class UserHandler(usecase = UserUsecaseInterface):
-    def __init__(self, uc: UserUsecaseInterface) -> None:
-        self.uc = uc
-    def hello_world(self):
-       return self.us.hello_world()
+class UserHandler:
+    def __init__(self, usecase: UserUsecaseInterface) -> None:
+        self.uc = usecase
+
+    def hello_world(self) -> object:
+       return {
+           "say": self.uc.hello_world()
+        }

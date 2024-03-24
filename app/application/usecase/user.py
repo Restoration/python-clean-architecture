@@ -1,6 +1,6 @@
-from infrastructure.respository.user import UserRepositoryInterface
+from interface.repository.user import UserRepositoryInterface
 
-class UserUsecase(repo = UserRepositoryInterface): 
+class UserUsecase: 
     def __init__(self, repo: UserRepositoryInterface) -> None:
         self.repo = repo
 

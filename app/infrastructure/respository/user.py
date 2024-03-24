@@ -1,3 +1,3 @@
 class UserRepository():
-    def request(self):
+    def request(self) -> str:
         return "hello world"
