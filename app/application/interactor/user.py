@@ -6,4 +6,5 @@ class UserUsecase(UserUsecaseInterface):
         self.repo = repo
 
     def hello_world(self) -> str:
-        return self.repo.request()
+        user = self.repo.request()
+        return user.message
