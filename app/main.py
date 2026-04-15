@@ -9,4 +9,4 @@ def healthcheck():
 
 @app.get("/user/hello_world")
 def hello_world():
-    return UserFactory.handler().hello_world()
+    return UserFactory.controller().hello_world()

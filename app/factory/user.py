@@ -1,12 +1,12 @@
-from presentation.handler.user import UserHandler
+from presentation.controller.user import UserController
 from application.interactor.user import UserInteractor
 from infrastructure.repository.user import UserRepository
 
 
 class UserFactory:
     @staticmethod
-    def handler():
-        return UserHandler(UserFactory.usecase())
+    def controller():
+        return UserController(UserFactory.usecase())
 
     @staticmethod
     def usecase():

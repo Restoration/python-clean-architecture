@@ -1,8 +1,8 @@
 from typing import Dict
-from interface.handler.user import IUserHandler
+from interface.controller.user import IUserController
 from interface.usecase.user import IUserUsecase
 
-class UserHandler(IUserHandler):
+class UserController(IUserController):
     def __init__(self, usecase: IUserUsecase) -> None:
         self.uc = usecase
 

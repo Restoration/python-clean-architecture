@@ -15,10 +15,10 @@ app/
 │   └── user/
 │       └── entity.py                    # ドメインエンティティ
 ├── presentation/
-│   └── handler/
+│   └── controller/
 │       └── user.py                      # HTTPハンドラー実装
 ├── interface/
-│   ├── handler/
+│   ├── controller/
 │   │   └── user.py                      # ハンドラー抽象インターフェース
 │   ├── usecase/
 │   │   └── user.py                      # ユースケース抽象インターフェース
@@ -59,11 +59,11 @@ class User:
 - ハンドラーインターフェースは `domain` や `infrastructure` に依存しない
 
 ```python
-# interface/handler/user.py
+# interface/controller/user.py
 from abc import ABC, abstractmethod
 from typing import Dict
 
-class IUserHandler(ABC):
+class IUserController(ABC):
     @abstractmethod
     def hello_world(self) -> Dict[str, str]:
         pass
@@ -115,12 +115,12 @@ class UserInteractor(IUserInteractor):
 - ユースケースインターフェースを受け取り、レスポンスを返す
 
 ```python
-# presentation/handler/user.py
+# presentation/controller/user.py
 from typing import Dict
-from interface.handler.user import IUserHandler
+from interface.controller.user import IUserController
 from interface.usecase.user import IUserInteractor
 
-class UserHandler(IUserHandler):
+class UserController(IUserController):
     def __init__(self, usecase: IUserInteractor) -> None:
         self.uc = usecase
 
@@ -162,15 +162,15 @@ class UserRepository(IUserRepository):
 
 ```python
 # factory/user.py
-from presentation.handler.user import UserHandler
+from presentation.controller.user import UserController
 from application.interactor.user import UserInteractor
 from infrastructure.repository.user import UserRepository
 
 
 class UserFactory:
     @staticmethod
-    def handler():
-        return UserHandler(UserFactory.usecase())
+    def controller():
+        return UserController(UserFactory.usecase())
 
     @staticmethod
     def usecase():
@@ -198,7 +198,7 @@ def healthcheck():
 
 @app.get("/user/hello_world")
 def hello_world():
-    return UserFactory.handler().hello_world()
+    return UserFactory.controller().hello_world()
 ```
 
 ---
@@ -212,7 +212,7 @@ main.py（ルーティング）
     ↓
 factory（依存性の組み立て）
     ↓
-UserHandler（presentation）
+UserController（presentation）
     ↓
 UserInteractor（application/interactor）
     ↓
@@ -231,9 +231,9 @@ User（domain/entity）          ← ドメインエンティティに変換
 | 種別 | 規則 | 例 |
 |---|---|---|
 | エンティティ | PascalCase | `User` |
-| インターフェース | `I*` プレフィックス | `IUserHandler` |
+| インターフェース | `I*` プレフィックス | `IUserController` |
 | DTO | `*Dto` サフィックス | `UserDto` |
-| ファクトリ | `*Factory` サフィックス + `@staticmethod` | `UserFactory.handler()` |
+| ファクトリ | `*Factory` サフィックス + `@staticmethod` | `UserFactory.controller()` |
 | インタラクター | ユースケース名をそのまま使用 | `UserInteractor` |
 
 ---
