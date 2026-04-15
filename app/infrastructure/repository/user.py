@@ -1,4 +1,4 @@
-from domain.user.entity import User
+from domain.user import User
 from interface.repository.user import IUserRepository
 from infrastructure.dto.user import UserDto
 

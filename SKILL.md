@@ -12,8 +12,7 @@ app/
 ├── factory/
 │   └── user.py                          # 依存性注入ファクトリ（クラスベース）
 ├── domain/
-│   └── user/
-│       └── entity.py                    # ドメインエンティティ
+│   └── user.py                          # ドメインエンティティ
 ├── presentation/
 │   └── controller/
 │       └── user.py                      # HTTPハンドラー実装
@@ -44,7 +43,7 @@ app/
 - `@dataclass` でエンティティを定義する
 
 ```python
-# domain/user/entity.py
+# domain/user.py
 from dataclasses import dataclass
 
 @dataclass
@@ -82,7 +81,7 @@ class IUserInteractor(ABC):
 ```python
 # interface/repository/user.py
 from abc import ABC, abstractmethod
-from domain.user.entity import User
+from domain.user import User
 
 class IUserRepository(ABC):
     @abstractmethod
@@ -146,7 +145,7 @@ class UserDto:
 
 ```python
 # infrastructure/repository/user.py
-from domain.user.entity import User
+from domain.user import User
 from interface.repository.user import IUserRepository
 from infrastructure.dto.user import UserDto
 
@@ -220,7 +219,7 @@ UserRepository（infrastructure/repository）
     ↓
 UserDto（infrastructure/dto）  ← 外部データをDTOで受け取る
     ↓
-User（domain/entity）          ← ドメインエンティティに変換
+User（domain/user.py）         ← ドメインエンティティに変換
     ↑ 以降はドメインエンティティを上位層へ伝播
 ```
 
