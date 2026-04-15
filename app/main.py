@@ -4,9 +4,9 @@ from container.user import BuildUserHandler
 app = FastAPI()
 
 @app.get("/healthcheck")
-def read_root():
+def healthcheck():
     return {}
 
 @app.get("/user/hello_world")
-def read_root():
+def hello_world():
     return BuildUserHandler().hello_world()
