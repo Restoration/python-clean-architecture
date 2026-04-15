@@ -1,6 +1,6 @@
 from presentation.handler.user import UserHandler
-from application.usecase.user import UserUsecase
-from infrastructure.respository.user import UserRepository
+from application.interactor.user import UserUsecase
+from infrastructure.repository.user import UserRepository
 
 def BuildUserHandler():
     return UserHandler(
