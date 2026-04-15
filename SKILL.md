@@ -73,7 +73,7 @@ class IUserHandler(ABC):
 # interface/usecase/user.py
 from abc import ABC, abstractmethod
 
-class IUserUsecase(ABC):
+class IUserInteractor(ABC):
     @abstractmethod
     def hello_world(self) -> str:
         pass
@@ -97,10 +97,10 @@ class IUserRepository(ABC):
 
 ```python
 # application/interactor/user.py
-from interface.usecase.user import IUserUsecase
+from interface.usecase.user import IUserInteractor
 from interface.repository.user import IUserRepository
 
-class UserUsecase(IUserUsecase):
+class UserInteractor(IUserInteractor):
     def __init__(self, repo: IUserRepository) -> None:
         self.repo = repo
 
@@ -118,10 +118,10 @@ class UserUsecase(IUserUsecase):
 # presentation/handler/user.py
 from typing import Dict
 from interface.handler.user import IUserHandler
-from interface.usecase.user import IUserUsecase
+from interface.usecase.user import IUserInteractor
 
 class UserHandler(IUserHandler):
-    def __init__(self, usecase: IUserUsecase) -> None:
+    def __init__(self, usecase: IUserInteractor) -> None:
         self.uc = usecase
 
     def hello_world(self) -> Dict[str, str]:
@@ -163,7 +163,7 @@ class UserRepository(IUserRepository):
 ```python
 # factory/user.py
 from presentation.handler.user import UserHandler
-from application.interactor.user import UserUsecase
+from application.interactor.user import UserInteractor
 from infrastructure.repository.user import UserRepository
 
 
@@ -174,7 +174,7 @@ class UserFactory:
 
     @staticmethod
     def usecase():
-        return UserUsecase(UserFactory.repository())
+        return UserInteractor(UserFactory.repository())
 
     @staticmethod
     def repository():
@@ -214,7 +214,7 @@ factory（依存性の組み立て）
     ↓
 UserHandler（presentation）
     ↓
-UserUsecase（application/interactor）
+UserInteractor（application/interactor）
     ↓
 UserRepository（infrastructure/repository）
     ↓
@@ -234,7 +234,7 @@ User（domain/entity）          ← ドメインエンティティに変換
 | インターフェース | `I*` プレフィックス | `IUserHandler` |
 | DTO | `*Dto` サフィックス | `UserDto` |
 | ファクトリ | `*Factory` サフィックス + `@staticmethod` | `UserFactory.handler()` |
-| インタラクター | ユースケース名をそのまま使用 | `UserUsecase` |
+| インタラクター | ユースケース名をそのまま使用 | `UserInteractor` |
 
 ---
 

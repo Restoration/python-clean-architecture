@@ -1,7 +1,7 @@
-from interface.usecase.user import IUserUsecase
+from interface.usecase.user import IUserInteractor
 from interface.repository.user import IUserRepository
 
-class UserUsecase(IUserUsecase):
+class UserInteractor(IUserInteractor):
     def __init__(self, repo: IUserRepository) -> None:
         self.repo = repo
 
