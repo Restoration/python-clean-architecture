@@ -1,11 +1,7 @@
 from abc import ABC, abstractmethod
-from interface.usecase.user import UserUsecaseInterface
+from typing import Dict
 
-class UserHanlderInterface(ABC):
+class UserHandlerInterface(ABC):
     @abstractmethod
-    def __init__(self, usecase: UserUsecaseInterface) -> None:
-        pass
-
-    @abstractmethod
-    def hello_world(self) -> str:
+    def hello_world(self) -> Dict[str, str]:
         pass
