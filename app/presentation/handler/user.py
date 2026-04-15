@@ -7,6 +7,6 @@ class UserHandler(UserHandlerInterface):
         self.uc = usecase
 
     def hello_world(self) -> Dict[str, str]:
-       return {
-           "say": self.uc.hello_world()
+        return {
+            "say": self.uc.hello_world()
         }
