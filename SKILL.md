@@ -63,7 +63,7 @@ class User:
 from abc import ABC, abstractmethod
 from typing import Dict
 
-class UserHandlerInterface(ABC):
+class IUserHandler(ABC):
     @abstractmethod
     def hello_world(self) -> Dict[str, str]:
         pass
@@ -73,7 +73,7 @@ class UserHandlerInterface(ABC):
 # interface/usecase/user.py
 from abc import ABC, abstractmethod
 
-class UserUsecaseInterface(ABC):
+class IUserUsecase(ABC):
     @abstractmethod
     def hello_world(self) -> str:
         pass
@@ -84,7 +84,7 @@ class UserUsecaseInterface(ABC):
 from abc import ABC, abstractmethod
 from domain.user.entity import User
 
-class UserRepositoryInterface(ABC):
+class IUserRepository(ABC):
     @abstractmethod
     def request(self) -> User:
         pass
@@ -97,11 +97,11 @@ class UserRepositoryInterface(ABC):
 
 ```python
 # application/interactor/user.py
-from interface.usecase.user import UserUsecaseInterface
-from interface.repository.user import UserRepositoryInterface
+from interface.usecase.user import IUserUsecase
+from interface.repository.user import IUserRepository
 
-class UserUsecase(UserUsecaseInterface):
-    def __init__(self, repo: UserRepositoryInterface) -> None:
+class UserUsecase(IUserUsecase):
+    def __init__(self, repo: IUserRepository) -> None:
         self.repo = repo
 
     def hello_world(self) -> str:
@@ -117,11 +117,11 @@ class UserUsecase(UserUsecaseInterface):
 ```python
 # presentation/handler/user.py
 from typing import Dict
-from interface.handler.user import UserHandlerInterface
-from interface.usecase.user import UserUsecaseInterface
+from interface.handler.user import IUserHandler
+from interface.usecase.user import IUserUsecase
 
-class UserHandler(UserHandlerInterface):
-    def __init__(self, usecase: UserUsecaseInterface) -> None:
+class UserHandler(IUserHandler):
+    def __init__(self, usecase: IUserUsecase) -> None:
         self.uc = usecase
 
     def hello_world(self) -> Dict[str, str]:
@@ -147,10 +147,10 @@ class UserDto:
 ```python
 # infrastructure/repository/user.py
 from domain.user.entity import User
-from interface.repository.user import UserRepositoryInterface
+from interface.repository.user import IUserRepository
 from infrastructure.dto.user import UserDto
 
-class UserRepository(UserRepositoryInterface):
+class UserRepository(IUserRepository):
     def request(self) -> User:
         dto = UserDto(message="hello world")
         return User(message=dto.message)
@@ -226,7 +226,7 @@ User（domain/entity）          ← ドメインエンティティに変換
 | 種別 | 規則 | 例 |
 |---|---|---|
 | エンティティ | PascalCase | `User` |
-| インターフェース | `*Interface` サフィックス | `UserHandlerInterface` |
+| インターフェース | `I*` プレフィックス | `IUserHandler` |
 | DTO | `*Dto` サフィックス | `UserDto` |
 | ファクトリ関数 | `build_*` プレフィックス + snake_case | `build_user_handler` |
 | インタラクター | ユースケース名をそのまま使用 | `UserUsecase` |

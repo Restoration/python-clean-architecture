@@ -1,9 +1,9 @@
 from typing import Dict
-from interface.handler.user import UserHandlerInterface
-from interface.usecase.user import UserUsecaseInterface
+from interface.handler.user import IUserHandler
+from interface.usecase.user import IUserUsecase
 
-class UserHandler(UserHandlerInterface):
-    def __init__(self, usecase: UserUsecaseInterface) -> None:
+class UserHandler(IUserHandler):
+    def __init__(self, usecase: IUserUsecase) -> None:
         self.uc = usecase
 
     def hello_world(self) -> Dict[str, str]:

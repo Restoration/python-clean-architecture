@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class UserUsecaseInterface(ABC):
+class IUserUsecase(ABC):
     @abstractmethod
     def hello_world(self) -> str:
         pass
