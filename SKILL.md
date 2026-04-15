@@ -9,8 +9,8 @@ Python + FastAPI によるクリーンアーキテクチャの構成規約をま
 ```
 app/
 ├── main.py                              # FastAPI エントリポイント・ルーティング
-├── container/
-│   └── user.py                          # 依存性注入コンテナ（ファクトリ関数）
+├── factory/
+│   └── user.py                          # 依存性注入ファクトリ（クラスベース）
 ├── domain/
 │   └── user/
 │       └── entity.py                    # ドメインエンティティ
@@ -156,34 +156,39 @@ class UserRepository(IUserRepository):
         return User(message=dto.message)
 ```
 
-### container（依存性注入）
-- ファクトリ関数で依存チェーンを組み立てる
-- 関数名は snake_case とする
+### factory（依存性注入）
+- エンティティ単位でファクトリクラスを定義する
+- `@staticmethod` で依存チェーンを組み立てる
 
 ```python
-# container/user.py
+# factory/user.py
 from presentation.handler.user import UserHandler
 from application.interactor.user import UserUsecase
 from infrastructure.repository.user import UserRepository
 
-def build_user_handler():
-    return UserHandler(build_user_usecase())
 
-def build_user_usecase():
-    return UserUsecase(build_user_repository())
+class UserFactory:
+    @staticmethod
+    def handler():
+        return UserHandler(UserFactory.usecase())
 
-def build_user_repository():
-    return UserRepository()
+    @staticmethod
+    def usecase():
+        return UserUsecase(UserFactory.repository())
+
+    @staticmethod
+    def repository():
+        return UserRepository()
 ```
 
 ### main.py（エントリポイント）
 - FastAPI のルーティングのみを記述する
 - エンドポイント関数名は重複させない
-- コンテナのファクトリ関数を呼び出す
+- ファクトリクラスを呼び出す
 
 ```python
 from fastapi import FastAPI
-from container.user import build_user_handler
+from factory.user import UserFactory
 
 app = FastAPI()
 
@@ -193,7 +198,7 @@ def healthcheck():
 
 @app.get("/user/hello_world")
 def hello_world():
-    return build_user_handler().hello_world()
+    return UserFactory.handler().hello_world()
 ```
 
 ---
@@ -205,7 +210,7 @@ HTTP Request
     ↓
 main.py（ルーティング）
     ↓
-container（依存性の組み立て）
+factory（依存性の組み立て）
     ↓
 UserHandler（presentation）
     ↓
@@ -228,7 +233,7 @@ User（domain/entity）          ← ドメインエンティティに変換
 | エンティティ | PascalCase | `User` |
 | インターフェース | `I*` プレフィックス | `IUserHandler` |
 | DTO | `*Dto` サフィックス | `UserDto` |
-| ファクトリ関数 | `build_*` プレフィックス + snake_case | `build_user_handler` |
+| ファクトリ | `*Factory` サフィックス + `@staticmethod` | `UserFactory.handler()` |
 | インタラクター | ユースケース名をそのまま使用 | `UserUsecase` |
 
 ---

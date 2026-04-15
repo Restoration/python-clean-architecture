@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from container.user import build_user_handler
+from factory.user import UserFactory
 
 app = FastAPI()
 
@@ -9,4 +9,4 @@ def healthcheck():
 
 @app.get("/user/hello_world")
 def hello_world():
-    return build_user_handler().hello_world()
+    return UserFactory.handler().hello_world()
