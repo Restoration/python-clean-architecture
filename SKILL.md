@@ -27,8 +27,8 @@ app/
 │   └── interactor/
 │       └── user.py                      # ビジネスロジック実装
 └── infrastructure/
-    ├── dto/
-    │   └── user.py                      # データ転送オブジェクト
+    ├── dao/
+    │   └── user.py                      # データアクセスオブジェクト
     └── repository/
         └── user.py                      # データアクセス実装
 ```
@@ -131,15 +131,15 @@ class UserController(IUserController):
 
 ### infrastructure（インフラ層）
 - `repository/` にデータアクセスを実装する
-- `dto/` に外部データの転送オブジェクトを定義する
-- DTOはインフラ層内部に留め、ドメインエンティティに変換してから返す
+- `dao/` に外部データのアクセスオブジェクトを定義する
+- DAOはインフラ層内部に留め、ドメインエンティティに変換してから返す
 
 ```python
-# infrastructure/dto/user.py
+# infrastructure/dao/user.py
 from dataclasses import dataclass
 
 @dataclass
-class UserDto:
+class UserDao:
     message: str
 ```
 
@@ -147,12 +147,12 @@ class UserDto:
 # infrastructure/repository/user.py
 from domain.user import User
 from interface.repository.user import IUserRepository
-from infrastructure.dto.user import UserDto
+from infrastructure.dao.user import UserDao
 
 class UserRepository(IUserRepository):
     def request(self) -> User:
-        dto = UserDto(message="hello world")
-        return User(message=dto.message)
+        dao = UserDao(message="hello world")
+        return User(message=dao.message)
 ```
 
 ### factory（依存性注入）
@@ -217,7 +217,7 @@ UserInteractor（application/interactor）
     ↓
 UserRepository（infrastructure/repository）
     ↓
-UserDto（infrastructure/dto）  ← 外部データをDTOで受け取る
+UserDao（infrastructure/dao）  ← 外部データをDAOで受け取る
     ↓
 User（domain/user.py）         ← ドメインエンティティに変換
     ↑ 以降はドメインエンティティを上位層へ伝播
@@ -231,7 +231,7 @@ User（domain/user.py）         ← ドメインエンティティに変換
 |---|---|---|
 | エンティティ | PascalCase | `User` |
 | インターフェース | `I*` プレフィックス | `IUserController` |
-| DTO | `*Dto` サフィックス | `UserDto` |
+| DAO | `*Dao` サフィックス | `UserDao` |
 | ファクトリ | `*Factory` サフィックス + `@staticmethod` | `UserFactory.controller()` |
 | インタラクター | ユースケース名をそのまま使用 | `UserInteractor` |
 

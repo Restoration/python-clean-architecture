@@ -1,9 +1,9 @@
 from domain.user import User
 from interface.repository.user import IUserRepository
-from infrastructure.dto.user import UserDto
+from infrastructure.dao.user import UserDao
 
 
 class UserRepository(IUserRepository):
     def request(self) -> User:
-        dto = UserDto(message="hello world")
-        return User(message=dto.message)
+        dao = UserDao(message="hello world")
+        return User(message=dao.message)

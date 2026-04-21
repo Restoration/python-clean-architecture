@@ -24,7 +24,7 @@ sed -e 's/{Entity}/Order/g' -e 's/{entity}/order/g' docs/SKILL_TEMPLATE.md > SKI
 | ディレクトリ構成 | 各層のファイル配置 |
 | 層の責務 | domain / interface / application / presentation / infrastructure / factory 各層の役割とコード例 |
 | データフロー | HTTP リクエストからレスポンスまでの流れ |
-| 命名規則 | エンティティ・インターフェース・DTO・ファクトリの命名パターン |
+| 命名規則 | エンティティ・インターフェース・DAO・ファクトリの命名パターン |
 | 依存方向の原則 | クリーンアーキテクチャの依存ルール |
 
 ### Claude Code での活用

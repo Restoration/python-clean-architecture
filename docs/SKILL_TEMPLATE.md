@@ -28,8 +28,8 @@ app/
 │   └── interactor/
 │       └── {entity}.py                  # ビジネスロジック実装
 └── infrastructure/
-    ├── dto/
-    │   └── {entity}.py                  # データ転送オブジェクト
+    ├── dao/
+    │   └── {entity}.py                  # データアクセスオブジェクト
     └── repository/
         └── {entity}.py                  # データアクセス実装
 ```
@@ -132,15 +132,15 @@ class {Entity}Controller(I{Entity}Controller):
 
 ### infrastructure（インフラ層）
 - `repository/` にデータアクセスを実装する
-- `dto/` に外部データの転送オブジェクトを定義する
-- DTOはインフラ層内部に留め、ドメインエンティティに変換してから返す
+- `dao/` に外部データのアクセスオブジェクトを定義する
+- DAOはインフラ層内部に留め、ドメインエンティティに変換してから返す
 
 ```python
-# infrastructure/dto/{entity}.py
+# infrastructure/dao/{entity}.py
 from dataclasses import dataclass
 
 @dataclass
-class {Entity}Dto:
+class {Entity}Dao:
     message: str
 ```
 
@@ -148,12 +148,12 @@ class {Entity}Dto:
 # infrastructure/repository/{entity}.py
 from domain.{entity} import {Entity}
 from interface.repository.{entity} import I{Entity}Repository
-from infrastructure.dto.{entity} import {Entity}Dto
+from infrastructure.dao.{entity} import {Entity}Dao
 
 class {Entity}Repository(I{Entity}Repository):
     def request(self) -> {Entity}:
-        dto = {Entity}Dto(message="hello world")
-        return {Entity}(message=dto.message)
+        dao = {Entity}Dao(message="hello world")
+        return {Entity}(message=dao.message)
 ```
 
 ### factory（依存性注入）
@@ -218,7 +218,7 @@ factory（依存性の組み立て）
     ↓
 {Entity}Repository（infrastructure/repository）
     ↓
-{Entity}Dto（infrastructure/dto）  ← 外部データをDTOで受け取る
+{Entity}Dao（infrastructure/dao）  ← 外部データをDAOで受け取る
     ↓
 {Entity}（domain/{entity}.py）      ← ドメインエンティティに変換
     ↑ 以降はドメインエンティティを上位層へ伝播
@@ -232,7 +232,7 @@ factory（依存性の組み立て）
 |---|---|---|
 | エンティティ | PascalCase | `{Entity}` |
 | インターフェース | `I*` プレフィックス | `I{Entity}Controller` |
-| DTO | `*Dto` サフィックス | `{Entity}Dto` |
+| DAO | `*Dao` サフィックス | `{Entity}Dao` |
 | ファクトリ | `*Factory` サフィックス + `@staticmethod` | `{Entity}Factory.controller()` |
 | インタラクター | ユースケース名をそのまま使用 | `{Entity}Interactor` |
 
