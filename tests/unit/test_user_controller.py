@@ -1,5 +1,6 @@
 from interface.usecase.user import IUserUsecase
 from presentation.controller.user import UserController
+from presentation.dto.user import GetUserDTO
 
 
 class FakeUserUsecase(IUserUsecase):
@@ -11,13 +12,14 @@ class FakeUserUsecase(IUserUsecase):
 
 
 class TestUserController:
-    def test_hello_world_returns_dict_with_say_key(self):
+    def test_hello_world_returns_response_with_say(self):
         usecase = FakeUserUsecase("hello world")
         controller = UserController(usecase)
 
         result = controller.hello_world()
 
-        assert result == {"say": "hello world"}
+        assert isinstance(result, GetUserDTO)
+        assert result.message == "hello world"
 
     def test_hello_world_returns_custom_message(self):
         usecase = FakeUserUsecase("custom message")
@@ -25,4 +27,5 @@ class TestUserController:
 
         result = controller.hello_world()
 
-        assert result == {"say": "custom message"}
+        assert isinstance(result, GetUserDTO)
+        assert result.message == "custom message"

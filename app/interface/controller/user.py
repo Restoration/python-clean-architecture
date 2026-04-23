@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+
+from presentation.dto.user import GetUserDTO
+
 
 class IUserController(ABC):
     @abstractmethod
-    def hello_world(self) -> Dict[str, str]:
+    def hello_world(self) -> GetUserDTO:
         pass
