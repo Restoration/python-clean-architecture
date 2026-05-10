@@ -12,13 +12,20 @@ class FakeUserUsecase(IUserUsecase):
 
 
 class TestUserController:
-    def test_hello_world_returns_response_with_say(self):
+    def test_hello_world_returns_dto(self):
         usecase = FakeUserUsecase("hello world")
         controller = UserController(usecase)
 
         result = controller.hello_world()
 
         assert isinstance(result, GetUserDTO)
+
+    def test_hello_world_returns_correct_message(self):
+        usecase = FakeUserUsecase("hello world")
+        controller = UserController(usecase)
+
+        result = controller.hello_world()
+
         assert result.message == "hello world"
 
     def test_hello_world_returns_custom_message(self):
@@ -27,5 +34,4 @@ class TestUserController:
 
         result = controller.hello_world()
 
-        assert isinstance(result, GetUserDTO)
         assert result.message == "custom message"
