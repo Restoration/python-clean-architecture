@@ -1,6 +1,7 @@
 from interface.usecase.user import IUserUsecase
 from presentation.controller.user import UserController
 from presentation.dto.user import GetUserDTO
+from domain.user import UserEntity
 
 
 class FakeUserUsecase(IUserUsecase):
@@ -9,6 +10,9 @@ class FakeUserUsecase(IUserUsecase):
 
     def hello_world(self) -> str:
         return self._message
+
+    def create_user(self, name: str, email: str, age: int) -> UserEntity:
+        return UserEntity(name=name, email=email, age=age)
 
 
 class TestUserController:

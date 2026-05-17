@@ -1,4 +1,4 @@
-from domain.user import User
+from domain.user import User, UserEntity
 from interface.repository.user import IUserRepository
 from application.interactor.user import UserInteractor
 
@@ -9,6 +9,9 @@ class FakeUserRepository(IUserRepository):
 
     def request(self) -> User:
         return self._user
+
+    def create_user(self, name: str, email: str, age: int) -> UserEntity:
+        return UserEntity(name=name, email=email, age=age)
 
 
 class TestUserInteractor:
