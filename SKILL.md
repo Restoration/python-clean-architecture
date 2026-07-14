@@ -1,3 +1,8 @@
+---
+name: python-clean-architecture
+description: Python バックエンド(FastAPI + Pydantic)におけるクリーンアーキテクチャの構成規約。レイヤー構成・各層の責務と書き方・命名規則・依存方向・テスト方針を解説する。API エンドポイントの追加・変更、interactor/repository/controller の実装、レイヤー間の責務判断、ユニットテスト作成のときに参照する。
+---
+
 # Python Clean Architecture - 構成ガイド
 
 Python + FastAPI によるクリーンアーキテクチャの構成規約をまとめたドキュメント。
