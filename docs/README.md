@@ -24,14 +24,13 @@ sed -e 's/{Entity}/Order/g' -e 's/{entity}/order/g' docs/SKILL_TEMPLATE.md > SKI
 | ディレクトリ構成 | 各層のファイル配置 |
 | 層の責務 | domain / interface / application / presentation / infrastructure / factory 各層の役割とコード例 |
 | データフロー | HTTP リクエストからレスポンスまでの流れ |
-| 命名規則 | エンティティ・インターフェース・DAO・ファクトリの命名パターン |
+| テスト | Fake 注入による単体テストのパターン |
+| 命名規則 | エンティティ・インターフェース・DAO・DTO・ファクトリの命名パターン |
 | 依存方向の原則 | クリーンアーキテクチャの依存ルール |
 
 ### Claude Code での活用
 
-プロジェクトルートに `SKILL.md` として配置すると、Claude Code がこの規約に従ってコードを生成する。
+エンティティ追加用のスキルが `.claude/skills/add-entity/SKILL.md` に登録済み。
+「Order のAPIを追加して」のような依頼で Claude Code が自動的に読み込み、この規約に従ってコードを生成する（`/add-entity` として明示的に呼ぶことも可能）。
 
-```bash
-# スラッシュコマンドとして登録する場合
-cp docs/SKILL_TEMPLATE.md .claude/commands/python-clean-arch.md
-```
+規約を変更した場合は、`SKILL_TEMPLATE.md`・ルートの `SKILL.md`・`.claude/skills/add-entity/SKILL.md` の3ファイルを同期して更新すること。
